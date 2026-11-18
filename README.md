@@ -2,19 +2,43 @@
 
 A bilingual (English/Bangla), responsive static website for Black Shadow Team with a premium dark-and-gold visual identity, subtle motion, and reduced-motion accessibility support.
 
-## Preview locally
+## Development
 
-This is a static site: open `index.html` in a browser, or run a local server such as:
+Install dependencies:
 
 ```bash
-python -m http.server 8000
+npm install
 ```
 
-Then visit `http://localhost:8000`.
+Run the development server:
+
+```bash
+npm run dev
+```
+
+The site will be available at `http://localhost:5173`.
+
+## Build
+
+Build the site for production:
+
+```bash
+npm run build
+```
+
+Preview the production build:
+
+```bash
+npm run preview
+```
 
 ## Deploy to Vercel
 
-Import this repository into Vercel. No build command or framework preset is required; use the repository root as the output directory. Vercel will serve `index.html` as the site homepage.
+Import this repository into Vercel. The build settings are configured in `vercel.json`:
+- Build Command: `npm run build`
+- Output Directory: `dist`
+
+Vercel Web Analytics is included and will automatically track page views once enabled in your Vercel dashboard.
 
 ## Notes
 

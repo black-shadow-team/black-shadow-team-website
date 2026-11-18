@@ -1,5 +1,9 @@
 document.documentElement.classList.add('js');
 
+// Initialize Vercel Web Analytics
+import { inject } from '@vercel/analytics';
+inject();
+
 // Keep image assets local to this Vercel project instead of relying on another repository.
 const logoUrl = new URL('./Black%20Shadow%20Team%20logo.png', document.baseURI).href;
 const founderPhotoUrl = new URL('./ceo.jpg.jpeg', document.baseURI).href;
