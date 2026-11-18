@@ -4,6 +4,14 @@ const menuButton = document.querySelector('.menu-toggle');
 const nav = document.querySelector('.main-nav');
 const langButton = document.querySelector('.language-toggle');
 
+function closeNavigation(returnFocus = false) {
+  if (!menuButton || !nav) return;
+  menuButton.setAttribute('aria-expanded', 'false');
+  menuButton.setAttribute('aria-label', 'Open navigation');
+  nav.classList.remove('open');
+  if (returnFocus) menuButton.focus();
+}
+
 if (menuButton && nav) {
   menuButton.addEventListener('click', () => {
     const open = menuButton.getAttribute('aria-expanded') !== 'true';
@@ -13,21 +21,19 @@ if (menuButton && nav) {
   });
 
   nav.querySelectorAll('a').forEach((link) => {
-    link.addEventListener('click', () => {
-      menuButton.setAttribute('aria-expanded', 'false');
-      menuButton.setAttribute('aria-label', 'Open navigation');
-      nav.classList.remove('open');
-    });
+    link.addEventListener('click', () => closeNavigation());
   });
 
   document.addEventListener('keydown', (event) => {
     if (event.key === 'Escape' && nav.classList.contains('open')) {
-      menuButton.setAttribute('aria-expanded', 'false');
-      menuButton.setAttribute('aria-label', 'Open navigation');
-      nav.classList.remove('open');
-      menuButton.focus();
+      closeNavigation(true);
     }
   });
+
+  // Do not leave a mobile dropdown open if the viewport becomes desktop-sized.
+  window.addEventListener('resize', () => {
+    if (window.innerWidth > 850) closeNavigation();
+  }, { passive: true });
 }
 
 let currentLanguage = 'en';
@@ -39,6 +45,7 @@ try {
 }
 
 function setLanguage(language) {
+  if (language !== 'bn' && language !== 'en') return;
   currentLanguage = language;
   document.documentElement.lang = language;
   document.body.classList.toggle('lang-bn', language === 'bn');
@@ -67,7 +74,8 @@ const year = document.getElementById('year');
 if (year) year.textContent = new Date().getFullYear();
 
 const revealItems = document.querySelectorAll('.reveal');
-if ('IntersectionObserver' in window && !window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+const reducedMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+if ('IntersectionObserver' in window && !reducedMotion) {
   const revealObserver = new IntersectionObserver((entries, observer) => {
     entries.forEach((entry) => {
       if (entry.isIntersecting) {
@@ -78,11 +86,20 @@ if ('IntersectionObserver' in window && !window.matchMedia('(prefers-reduced-mot
   }, { threshold: 0.1, rootMargin: '0px 0px 40px 0px' });
   revealItems.forEach((element) => revealObserver.observe(element));
 } else {
+  // Keep the content visible if animations or IntersectionObserver are unavailable.
   revealItems.forEach((element) => element.classList.add('visible'));
 }
 
-// Load the research and projects section separately to keep the homepage maintainable.
+// Load the portfolio as progressive enhancement; the rest of the site remains usable if it fails.
+const portfolioStylesheet = document.createElement('link');
+portfolioStylesheet.rel = 'stylesheet';
+portfolioStylesheet.href = new URL('./portfolio.css', document.baseURI).href;
+document.head.appendChild(portfolioStylesheet);
+
 const portfolioScript = document.createElement('script');
 portfolioScript.src = new URL('./portfolio.js', document.baseURI).href;
 portfolioScript.async = true;
+portfolioScript.addEventListener('error', () => {
+  console.error('The optional portfolio section could not be loaded.');
+});
 document.body.appendChild(portfolioScript);
