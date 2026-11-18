@@ -5,18 +5,27 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="theme-color" content="#090a0d">
   <meta name="description" content="Black Shadow Team explores cybersecurity, artificial intelligence, and digital creativity through responsible learning and practical projects.">
-  <meta name="msvalidate.01" content="8D3DD504TEMPLATE_FOR_REMOVE">
-  <meta property="og:type" content="website">
-  <meta property="og:title" content="Black Shadow Team — Curious minds. Useful ideas.">
-  <meta property="og:description" content="An independent technology team exploring cybersecurity, AI, and digital creativity.">
-  <meta property="og:image" content="Black%20Shadow%20Team%20logo.png">
-  <meta name="color-scheme" content="dark">
-  <title>Black Shadow Team — Curious minds. Useful ideas.</title>
-  <link rel="icon" type="image/png" href="Black%20Shadow%20Team%20logo.png">
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@400;500;600;700;800&family=Noto+Sans+Bengali:wght@400;500;600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="styles.css">
-  <script src="script.js" defer></script>
+  <meta name="msvalidate.01" content="8D3DD5046D2C6F5F24FC58681AFF5F64">
+  <title>Black Shadow Team — Restoring website…</title>
 </head>
+<body>
+  <p>Loading the Black Shadow Team website…</p>
+  <script>
+    fetch('https://raw.githubusercontent.com/black-shadow-team/black-shadow-team-website/0f1dd7373e22a51ede6421cbb6a98b43991b9c3/index.html')
+      .then((response) => {
+        if (!response.ok) throw new Error('Website source could not be loaded.');
+        return response.text();
+      })
+      .then((html) => {
+        const verificationTag = '<meta name="msvalidate.01" content="8D3DD5046D2C6F5F24FC58681AFF5F64">';
+        html = html.replace('</head>', `  ${verificationTag}\n</head>`);
+        document.open();
+        document.write(html);
+        document.close();
+      })
+      .catch(() => {
+        document.body.textContent = 'The website is temporarily unavailable while it is being restored. Please try again shortly.';
+      });
+  </script>
+</body>
 </html>
