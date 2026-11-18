@@ -6,6 +6,7 @@
   <meta name="theme-color" content="#090a0d">
   <meta name="description" content="Black Shadow Team explores cybersecurity, artificial intelligence, and digital creativity through responsible learning and practical projects.">
   <meta name="msvalidate.01" content="8D3DD5046D2C6F5F24FC58681AFF5F64">
+  <meta name="google-site-verification" content="MYbuUtMOq_WX9Aa697czVvdBi4_0uDHPZ5olvJc80gw">
   <title>Black Shadow Team — Restoring website…</title>
 </head>
 <body>
@@ -17,8 +18,11 @@
         return response.text();
       })
       .then((html) => {
-        const verificationTag = '<meta name="msvalidate.01" content="8D3DD5046D2C6F5F24FC58681AFF5F64">';
-        html = html.replace('</head>', `  ${verificationTag}\n</head>`);
+        const verificationTags = [
+          '<meta name="msvalidate.01" content="8D3DD5046D2C6F5F24FC58681AFF5F64">',
+          '<meta name="google-site-verification" content="MYbuUtMOq_WX9Aa697czVvdBi4_0uDHPZ5olvJc80gw">'
+        ].join('\n  ');
+        html = html.replace('</head>', `  ${verificationTags}\n</head>`);
         document.open();
         document.write(html);
         document.close();
