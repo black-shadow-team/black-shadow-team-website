@@ -30,7 +30,6 @@ if (menuButton && nav) {
   });
 }
 
-const translations = [...document.querySelectorAll('[data-en][data-bn]')];
 let currentLanguage = 'en';
 try {
   const savedLanguage = localStorage.getItem('bst-language');
@@ -43,7 +42,7 @@ function setLanguage(language) {
   currentLanguage = language;
   document.documentElement.lang = language;
   document.body.classList.toggle('lang-bn', language === 'bn');
-  translations.forEach((element) => {
+  document.querySelectorAll('[data-en][data-bn]').forEach((element) => {
     element.innerHTML = element.dataset[language];
   });
   if (langButton) {
@@ -57,6 +56,7 @@ function setLanguage(language) {
     // Ignore storage restrictions without breaking the language switch.
   }
 }
+window.setBstLanguage = setLanguage;
 
 if (langButton) {
   langButton.addEventListener('click', () => setLanguage(currentLanguage === 'en' ? 'bn' : 'en'));
@@ -80,3 +80,9 @@ if ('IntersectionObserver' in window && !window.matchMedia('(prefers-reduced-mot
 } else {
   revealItems.forEach((element) => element.classList.add('visible'));
 }
+
+// Load the research and projects section separately to keep the homepage maintainable.
+const portfolioScript = document.createElement('script');
+portfolioScript.src = new URL('./portfolio.js', document.baseURI).href;
+portfolioScript.async = true;
+document.body.appendChild(portfolioScript);

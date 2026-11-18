@@ -1,0 +1,26 @@
+/* Portfolio sections added to the main Black Shadow Team profile page. */
+.portfolio-section{padding:105px 0 115px;background:linear-gradient(180deg,#0d0e11,#111216 52%,#0d0e11);border-block:1px solid rgba(255,255,255,.05)}
+.portfolio-intro{max-width:760px;margin:-20px 0 42px;color:var(--muted);font-size:14px;line-height:1.9}
+.portfolio-heading{grid-template-columns:.8fr 1.2fr .85fr}
+.portfolio-heading>p{grid-column:auto}
+.portfolio-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:15px}
+.portfolio-card{min-width:0;position:relative;padding:26px 26px 24px;border:1px solid var(--line);background:linear-gradient(145deg,rgba(255,255,255,.035),rgba(255,255,255,.012));transition:transform .25s,border-color .25s,background .25s}
+.portfolio-card:hover{transform:translateY(-4px);border-color:rgba(214,178,94,.42);background:linear-gradient(145deg,rgba(214,178,94,.07),rgba(255,255,255,.012))}
+.portfolio-card-top{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:20px}
+.portfolio-index{color:var(--gold);font-size:10px;letter-spacing:.18em}
+.portfolio-status{border:1px solid rgba(214,178,94,.35);padding:4px 8px;color:var(--gold-bright);font-size:9px;letter-spacing:.09em;text-transform:uppercase}
+.portfolio-card h3{margin:0 0 10px;font:600 19px var(--display);letter-spacing:-.025em}
+.portfolio-card>p{min-height:74px;margin:0;color:var(--muted);font-size:12px;line-height:1.85}
+.portfolio-tags{display:flex;flex-wrap:wrap;gap:7px;margin:18px 0 21px}
+.portfolio-tags span{padding:4px 8px;border:1px solid rgba(255,255,255,.08);color:#aaa69e;font-size:9px}
+.portfolio-card-link{display:inline-flex;align-items:center;gap:10px;color:var(--gold);font-size:11px;font-weight:700;text-decoration:none}
+.portfolio-card-link:hover{color:var(--gold-bright)}
+.portfolio-disclaimer{margin:25px 0 0;padding:14px 17px;border-left:2px solid var(--gold);background:rgba(214,178,94,.045);color:#aaa69e;font-size:10px;line-height:1.8}
+.portfolio-timeline{display:grid;grid-template-columns:repeat(3,1fr);gap:0;margin-top:45px;border-block:1px solid var(--line)}
+.portfolio-milestone{padding:20px 22px;border-right:1px solid var(--line)}
+.portfolio-milestone:last-child{border-right:0}
+.portfolio-milestone strong{display:block;color:var(--gold);font:600 18px var(--display)}
+.portfolio-milestone span{display:block;margin-top:5px;color:var(--muted);font-size:10px;line-height:1.7}
+body.lang-bn .portfolio-card h3{font-family:'Noto Sans Bengali',var(--display);letter-spacing:-.02em}
+@media(max-width:1000px){.portfolio-heading{grid-template-columns:.8fr 1.2fr}.portfolio-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:720px){.portfolio-section{padding:80px 0}.portfolio-heading{grid-template-columns:1fr}.portfolio-heading>p{grid-column:auto}.portfolio-intro{margin:0 0 28px;font-size:12px}.portfolio-grid{grid-template-columns:1fr}.portfolio-card{padding:22px}.portfolio-card>p{min-height:0}.portfolio-timeline{grid-template-columns:1fr}.portfolio-milestone{padding:16px 3px;border-right:0;border-bottom:1px solid var(--line)}.portfolio-milestone:last-child{border-bottom:0}}
