@@ -1,131 +1,38 @@
-document.documentElement.classList.add('js');
+(() => {
+  const menuButton = document.querySelector('.menu-toggle');
+  const navigation = document.querySelector('#site-nav');
+  const languageButton = document.querySelector('.language-toggle');
+  const year = document.querySelector('#year');
 
-// Keep image assets local to this Vercel project instead of relying on another repository.
-const logoUrl = new URL('./Black%20Shadow%20Team%20logo.png', document.baseURI).href;
-const founderPhotoUrl = new URL('./ceo.jpg.jpeg', document.baseURI).href;
-document.querySelectorAll('.brand img, .emblem-card img').forEach((image) => {
-  image.src = logoUrl;
-  image.decoding = 'async';
-  image.style.objectFit = 'contain';
-});
-const founderPhoto = document.querySelector('.founder-photo img');
-if (founderPhoto) {
-  founderPhoto.src = founderPhotoUrl;
-  founderPhoto.loading = 'lazy';
-  founderPhoto.decoding = 'async';
-  founderPhoto.style.objectFit = 'cover';
-  founderPhoto.style.objectPosition = 'center 35%';
-}
+  if (year) year.textContent = String(new Date().getFullYear());
 
-// Load decorative polish separately; core content and layout do not depend on it.
-const premiumStylesheet = document.createElement('link');
-premiumStylesheet.rel = 'stylesheet';
-premiumStylesheet.href = new URL('./premium.css', document.baseURI).href;
-document.head.appendChild(premiumStylesheet);
-
-const menuButton = document.querySelector('.menu-toggle');
-const nav = document.querySelector('.main-nav');
-const langButton = document.querySelector('.language-toggle');
-function closeNavigation(returnFocus = false) {
-  if (!menuButton || !nav) return;
-  menuButton.setAttribute('aria-expanded', 'false');
-  menuButton.setAttribute('aria-label', 'Open navigation');
-  nav.classList.remove('open');
-  if (returnFocus) menuButton.focus();
-}
-if (menuButton && nav) {
-  menuButton.addEventListener('click', () => {
-    const open = menuButton.getAttribute('aria-expanded') !== 'true';
-    menuButton.setAttribute('aria-expanded', String(open));
-    menuButton.setAttribute('aria-label', open ? 'Close navigation' : 'Open navigation');
-    nav.classList.toggle('open', open);
-  });
-  nav.querySelectorAll('a').forEach((link) => link.addEventListener('click', () => closeNavigation()));
-  document.addEventListener('keydown', (event) => {
-    if (event.key === 'Escape' && nav.classList.contains('open')) closeNavigation(true);
-  });
-  window.addEventListener('resize', () => {
-    if (window.innerWidth > 850) closeNavigation();
-  }, { passive: true });
-}
-
-let currentLanguage = 'en';
-try {
-  const savedLanguage = localStorage.getItem('bst-language');
-  if (savedLanguage === 'bn' || savedLanguage === 'en') currentLanguage = savedLanguage;
-} catch (_) {
-  // Storage may be disabled; language switching still works for this visit.
-}
-function setLanguage(language) {
-  if (language !== 'bn' && language !== 'en') return;
-  currentLanguage = language;
-  document.documentElement.lang = language;
-  document.body.classList.toggle('lang-bn', language === 'bn');
-  document.querySelectorAll('[data-en][data-bn]').forEach((element) => {
-    element.innerHTML = element.dataset[language];
-  });
-  if (langButton) {
-    langButton.textContent = language === 'en' ? 'বাংলা' : 'English';
-    langButton.setAttribute('aria-label', language === 'en' ? 'Switch to Bangla' : 'Switch to English');
-    langButton.lang = language === 'en' ? 'bn' : 'en';
-  }
-  try { localStorage.setItem('bst-language', language); } catch (_) { /* Ignore storage restrictions. */ }
-}
-window.setBstLanguage = setLanguage;
-if (langButton) langButton.addEventListener('click', () => setLanguage(currentLanguage === 'en' ? 'bn' : 'en'));
-if (currentLanguage !== 'en') setLanguage(currentLanguage);
-
-const year = document.getElementById('year');
-if (year) year.textContent = new Date().getFullYear();
-
-// Add lightweight scroll progress and a keyboard-friendly back-to-top control.
-const progress = document.createElement('div');
-progress.className = 'scroll-progress';
-progress.setAttribute('aria-hidden', 'true');
-progress.innerHTML = '<span></span>';
-document.body.appendChild(progress);
-const progressBar = progress.firstElementChild;
-const backToTop = document.createElement('a');
-backToTop.className = 'back-to-top';
-backToTop.href = '#home';
-backToTop.setAttribute('aria-label', 'Back to top');
-backToTop.textContent = '↑';
-document.body.appendChild(backToTop);
-let scrollTicking = false;
-function updateScrollUI() {
-  const scrollable = document.documentElement.scrollHeight - window.innerHeight;
-  const percent = scrollable > 0 ? Math.min(100, (window.scrollY / scrollable) * 100) : 0;
-  progressBar.style.width = `${percent}%`;
-  backToTop.classList.toggle('visible', window.scrollY > 500);
-  scrollTicking = false;
-}
-window.addEventListener('scroll', () => {
-  if (!scrollTicking) {
-    window.requestAnimationFrame(updateScrollUI);
-    scrollTicking = true;
-  }
-}, { passive: true });
-updateScrollUI();
-
-const revealItems = document.querySelectorAll('.reveal');
-const reducedMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-if ('IntersectionObserver' in window && !reducedMotion) {
-  const revealObserver = new IntersectionObserver((entries, observer) => {
-    entries.forEach((entry) => {
-      if (entry.isIntersecting) {
-        entry.target.classList.add('visible');
-        observer.unobserve(entry.target);
-      }
+  if (menuButton && navigation) {
+    menuButton.addEventListener('click', () => {
+      const isOpen = menuButton.getAttribute('aria-expanded') === 'true';
+      menuButton.setAttribute('aria-expanded', String(!isOpen));
+      menuButton.setAttribute('aria-label', isOpen ? 'Open menu' : 'Close menu');
+      navigation.classList.toggle('is-open', !isOpen);
     });
-  }, { threshold: 0.1, rootMargin: '0px 0px 40px 0px' });
-  revealItems.forEach((element) => revealObserver.observe(element));
-} else {
-  revealItems.forEach((element) => element.classList.add('visible'));
-}
 
-// The portfolio is optional progressive enhancement; failure won't break the homepage.
-const portfolioScript = document.createElement('script');
-portfolioScript.src = new URL('./portfolio.js', document.baseURI).href;
-portfolioScript.async = true;
-portfolioScript.addEventListener('error', () => console.error('Optional portfolio section could not be loaded.'));
-document.body.appendChild(portfolioScript);
+    navigation.querySelectorAll('a').forEach((link) => {
+      link.addEventListener('click', () => {
+        menuButton.setAttribute('aria-expanded', 'false');
+        menuButton.setAttribute('aria-label', 'Open menu');
+        navigation.classList.remove('is-open');
+      });
+    });
+  }
+
+  if (languageButton) {
+    languageButton.addEventListener('click', () => {
+      const nextLanguage = document.documentElement.lang === 'en' ? 'bn' : 'en';
+      document.documentElement.lang = nextLanguage;
+      document.querySelectorAll('[data-en][data-bn]').forEach((element) => {
+        element.innerHTML = element.dataset[nextLanguage];
+      });
+      languageButton.textContent = nextLanguage === 'en' ? 'বাংলা' : 'English';
+      languageButton.setAttribute('aria-label', nextLanguage === 'en' ? 'Switch to Bangla' : 'Switch to English');
+      languageButton.lang = nextLanguage === 'en' ? 'bn' : 'en';
+    });
+  }
+})();
