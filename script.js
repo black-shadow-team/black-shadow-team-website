@@ -1,3 +1,22 @@
+const logoUrl = new URL('./Black Shadow Team logo.png', document.baseURI).href;
+const founderPhotoUrl = new URL('./ceo.jpg.jpeg', document.baseURI).href;
+
+// Use the image assets stored alongside this site so they work on the deployed domain too.
+document.querySelectorAll('.brand img, .emblem-card img').forEach((image) => {
+  image.src = logoUrl;
+  image.decoding = 'async';
+  image.style.objectFit = 'contain';
+});
+
+const founderPhoto = document.querySelector('.founder-photo img');
+if (founderPhoto) {
+  founderPhoto.src = founderPhotoUrl;
+  founderPhoto.loading = 'lazy';
+  founderPhoto.decoding = 'async';
+  founderPhoto.style.objectFit = 'cover';
+  founderPhoto.style.objectPosition = 'center 35%';
+}
+
 const menuButton = document.querySelector('.menu-toggle');
 const nav = document.querySelector('.main-nav');
 const langButton = document.querySelector('.language-toggle');
