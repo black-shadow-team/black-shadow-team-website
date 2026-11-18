@@ -17,6 +17,12 @@ if (founderPhoto) {
   founderPhoto.style.objectPosition = 'center 35%';
 }
 
+// Load decorative polish separately; core content and layout do not depend on it.
+const premiumStylesheet = document.createElement('link');
+premiumStylesheet.rel = 'stylesheet';
+premiumStylesheet.href = new URL('./premium.css', document.baseURI).href;
+document.head.appendChild(premiumStylesheet);
+
 const menuButton = document.querySelector('.menu-toggle');
 const nav = document.querySelector('.main-nav');
 const langButton = document.querySelector('.language-toggle');
@@ -71,6 +77,36 @@ if (currentLanguage !== 'en') setLanguage(currentLanguage);
 
 const year = document.getElementById('year');
 if (year) year.textContent = new Date().getFullYear();
+
+// Add lightweight scroll progress and a keyboard-friendly back-to-top control.
+const progress = document.createElement('div');
+progress.className = 'scroll-progress';
+progress.setAttribute('aria-hidden', 'true');
+progress.innerHTML = '<span></span>';
+document.body.appendChild(progress);
+const progressBar = progress.firstElementChild;
+const backToTop = document.createElement('a');
+backToTop.className = 'back-to-top';
+backToTop.href = '#home';
+backToTop.setAttribute('aria-label', 'Back to top');
+backToTop.textContent = '↑';
+document.body.appendChild(backToTop);
+let scrollTicking = false;
+function updateScrollUI() {
+  const scrollable = document.documentElement.scrollHeight - window.innerHeight;
+  const percent = scrollable > 0 ? Math.min(100, (window.scrollY / scrollable) * 100) : 0;
+  progressBar.style.width = `${percent}%`;
+  backToTop.classList.toggle('visible', window.scrollY > 500);
+  scrollTicking = false;
+}
+window.addEventListener('scroll', () => {
+  if (!scrollTicking) {
+    window.requestAnimationFrame(updateScrollUI);
+    scrollTicking = true;
+  }
+}, { passive: true });
+updateScrollUI();
+
 const revealItems = document.querySelectorAll('.reveal');
 const reducedMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 if ('IntersectionObserver' in window && !reducedMotion) {
